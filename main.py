@@ -12,7 +12,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# Define the Ship model
+# The Ship
 class Ship(Base):
     __tablename__ = 'ships'
     id = Column(Integer, primary_key=True, index=True)
@@ -24,7 +24,7 @@ class Ship(Base):
 
 Base.metadata.create_all(bind=engine)
 
-# Pydantic models for request and response data
+# Pydantic models 
 class ShipCreate(BaseModel):
     name: str
     displacement: float
@@ -38,7 +38,7 @@ class ShipResponse(ShipCreate):
     class Config:
         orm_mode = True
 
-# CRUD operations
+# CRUD 
 @app.post("/ships/", response_model=ShipResponse)
 def create_ship(ship: ShipCreate, db: Session = Depends(SessionLocal)):
     db_ship = Ship(**ship.dict())
